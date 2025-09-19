@@ -1,0 +1,44 @@
+<div class=flex-grow-1></div>
+<footer id="page-footer" class="bg-secondary mw-100">
+
+ <div class="footer-section container-fluid py-4">
+        <div class="row align-items-center">
+            <!-- Left side: Navigation links -->
+            <div id="footer-links" class="col-md-8">
+                <nav class="footer-nav">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item me-4">
+                            <a href="/impressum" class="text-white text-decoration-none">Impressum</a>
+                        </li>
+                        <li class="list-inline-item me-4">
+                            <a href="/kontakt" class="text-white text-decoration-none">Kontakt</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="/datenschutz" class="text-white text-decoration-none">Datenschutzerklärung</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <!-- Right side: ALIFE branding -->
+            <div id="footer-alife-logo" class="col-md-4 text-end">
+                <h2 class="mb-0 text-white fw-bold" style="font-size: 2.5rem; letter-spacing: 0.1em;">ALIFE</h2>
+            </div>
+        </div>
+        
+        <!-- Moodle's standard footer content (hidden but preserved for functionality) -->
+        <div class="d-none">
+            <div class="logininfo">
+                {{{ output.login_info }}}
+            </div>
+            {{{ output.standard_footer_html }}}
+            {{{ output.standard_end_of_body_html }}}
+        </div>
+    </div>
+
+    <div class="footer-content-debugging footer-dark bg-dark text-light">
+        <div class="container-fluid footer-dark-inner">
+            {{{ output.debug_footer_html }}}
+        </div>
+    </div>
+</footer>

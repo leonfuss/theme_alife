@@ -1,0 +1,127 @@
+// Post SCSS for the theme.
+// ============================================
+// ALIFE Theme - Navigation Bar Customisation
+// ============================================
+
+// Define ALIFE brand colours
+$alife-green-primary: #40651a;
+$alife-green-light: #eaf0e3;
+$alife-purple: #926896;
+$alife-background: #ffffff;
+
+// Main navbar styling
+.navbar {
+    height: 60px;
+    border-bottom: none !important;
+    background-color: $alife-green-light !important;
+    
+    // Remove Bootstrap's default box shadow
+    //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.primary-navigation .nav-link {
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    text-decoration: none;
+
+    cursor: pointer;
+    
+    // Hover state
+    &:hover {
+        color: $alife-green-primary !important;
+        background: none !important;
+    }
+    
+    // Active state
+    &.active {
+        color: $alife-green-primary !important;
+        font-weight: bold;
+    }
+}
+
+// Logo styling
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: $alife-green-primary !important;
+    text-decoration: none;
+    
+    .logo {
+        height: 45px;
+        width: auto;
+        margin-right: 0.5rem;
+    }
+    
+    &:hover {
+        color: $alife-green-light !important;
+        text-decoration: none;
+    }
+}
+
+// Floating Logo Styling
+.floating-logo-container {
+    position: fixed;
+    top: 25px; // Adjust based on navbar height
+    left: 60px;
+    transform: translateX(-50%);
+    z-index: 1050; // Higher than navbar
+    
+    .floating-logo-circle {
+        display: block;
+        width: 70px;
+        height: 70px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        border: 1px solid $alife-green-light;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        .floating-logo-img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+    }
+}
+
+// Adjust main content to account for floating logo
+#page-content {
+    margin-top: 50px; // Add space for the floating logo
+}
+
+footer {
+    background-color: $alife-purple !important;
+    height: 16vh !important;
+    padding: 30px 120px ;
+}
+
+.footer-alife-logo {
+}
+
+
+
+
+// Responsive adjustments
+@media (max-width: 767px) {
+    .floating-logo-container {
+	visibility: hidden;
+    }
+}
+
+@media (min-width: 768px) {
+    .navbar-spacing {
+        padding-left: 130px;
+    }
+}

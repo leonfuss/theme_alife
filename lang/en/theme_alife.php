@@ -22,11 +22,14 @@ $string["rawscsspre"] = "Raw initial SCSS";
 $string["rawscsspre_desc"] =
     "In this field you can provide initialising SCSS code, it will be injected before everything else. Most of the time you will use this setting to define variables.";
 
-$string["impressum_heading"] = "Impressum Settings";
-$string["impressum_content_de"] = "German Impressum Content";
-$string["impressum_content_de_desc"] =
-    "Content to display when the site language is German.";
-$string["impressum_content_en"] = "English Impressum Content";
-$string["impressum_content_en_desc"] =
-    "Content to display when the site language is English.";
-$string["impressum_title"] = "Legal Notice";
+// frontpage
+$string["welcome"] = "Welcome to ";
+$string["alife_stands_for"] = "ALIFE stands for:";
+$string["adaptive"] = "adaptive";
+$string["evidence"] = "evidence based";
+$string["effective"] = "effective";
+$string["up-to-date"] = "up-to-date";
+
+// footer
+$string["contact"] = "Contact";
+$string["privacy_policy"] = "Privacy Policy";

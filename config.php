@@ -2,10 +2,10 @@
 defined("MOODLE_INTERNAL") || die();
 
 $THEME->name = "alife";
-$THEME->sheets = [];		// we use scss instead of css
-$THEME->editor_sheets = []; 	// config of legacy text editor (TinyMCE)
+$THEME->sheets = []; // we use scss instead of css
+$THEME->editor_sheets = []; // config of legacy text editor (TinyMCE)
 $THEME->parents = ["boost"];
-$THEME->enable_dock = false;	// floating persisting elements
+$THEME->enable_dock = false; // floating persisting elements
 $THEME->yuicssmodules = [];
 
 // default override renderer
@@ -19,15 +19,15 @@ $THEME->addblockposition = BLOCK_ADDBLOCK_POSITION_FLATNAV;
 $THEME->haseditswitch = true;
 $THEME->usescourseindex = true;
 
-$THEME->scss = function($theme) {
+$THEME->scss = function ($theme) {
     return theme_alife_get_main_scss_content($theme);
 };
 
-// $THEME->layouts = [
-//     'frontpage' => array(
-//         'file' => 'frontpage.php',
-//         'regions' => array(),
-//         'defaultregion' => '',
-//         'options' => array('nonavbar' => true, 'noheader' => true, 'nofooter' => false),
-//     ),
-// ];
+$THEME->layouts = [
+    "frontpage" => [
+        "file" => "frontpage.php",
+        "regions" => ["side-pre"],
+        "defaultregion" => "side-pre",
+        "options" => ["nonavbar" => true],
+    ],
+];

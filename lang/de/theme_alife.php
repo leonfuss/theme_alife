@@ -21,14 +21,14 @@ $string["rawscsspre"] = "Reines initialisierendes SCSS";
 $string["rawscsspre_desc"] =
     "In diesem Feld können Sie initialisierenden SCSS-Code bereitstellen, der vor allem anderen eingefügt wird. Meistens werden Sie diese Einstellung verwenden, um Variablen zu definieren.";
 
-$string["impressum_heading"] = "Impressum-Einstellungen";
-$string["impressum_content_de"] = "Deutscher Impressum-Inhalt";
-$string["impressum_content_de_desc"] =
-    "Inhalt, der angezeigt wird, wenn die Seitensprache Deutsch ist.";
-$string["impressum_content_en"] = "Englischer Impressum-Inhalt";
-$string["impressum_content_en_desc"] =
-    "Inhalt, der angezeigt wird, wenn die Seitensprache Englisch ist.";
-$string["impressum_content_fallback"] = "Fallback-Impressum-Inhalt";
-$string["impressum_content_fallback_desc"] =
-    "Standardinhalt, wenn keine sprachspezifische Version verfügbar ist.";
-$string["impressum_title"] = "Impressum";
+//fronpage
+$string["welcome"] = "Willkommen bei ";
+$string["alife_stands_for"] = "ALIFE - Das steht für:";
+$string["adaptive"] = "Adaptive";
+$string["evidence"] = "Evidenzbasiert";
+$string["effective"] = "Wirksam";
+$string["up-to-date"] = "Aktuell";
+
+// footer
+$string["contact"] = "Kontakt";
+$string["privacy_policy"] = "Datenschutzerklärung";

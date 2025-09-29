@@ -29,6 +29,7 @@ $string["adaptive"] = "adaptive";
 $string["evidence"] = "evidence based";
 $string["effective"] = "effective";
 $string["up-to-date"] = "up-to-date";
+$string["continuelearning"] = "Continue Learning";
 
 // footer
 $string["contact"] = "Contact";

@@ -6,62 +6,63 @@ $alife-green-light: #eaf0e3;
 $alife-purple: #926896;
 $alife-background: #ffffff;
 
-$white:    #fff;
+$white: #fff;
 $gray-100: #f8f9fa;
 $gray-500: #8f959e;
 $gray-900: #1d2125;
-$black:    #000;
-$red:     #ca3120;
-$orange:  #f0ad4e;
-$cyan:    #008196;
+$black: #000;
+$red: #ca3120;
+$orange: #f0ad4e;
+$cyan: #008196;
 
-$primary:       $alife-green-primary;
-$success:       $alife-green-light;
-$info:          $cyan;
-$warning:       $orange;
-$danger:        $red;
-$secondary:     $alife-purple;
+$primary: $alife-green-primary;
+$success: $alife-green-light;
+$info: $cyan;
+$warning: $orange;
+$danger: $red;
+$secondary: $alife-purple;
 
-$info-outline:    #1f7e9a;
+$info-outline: #1f7e9a;
 $warning-outline: #a6670e;
 
-
 // Body
-$body-color:    $gray-900 !default;
+$body-color: $gray-900 !default;
 
 // Fonts
+$font-family-sans-serif:
+    Arial, "Helvetica Neue", Helvetica, sans-serif !default;
 $font-size-base: 0.9375rem !default;
 $rfs-base-font-size: 0.9rem !default;
-$headings-font-weight:   700 !default;
+$headings-font-weight: 700 !default;
 
 // Navbar
-$navbar-light-color:                $alife-green-primary;
-$navbar-light-hover-color:          rgba($black, .9) !default;
+$navbar-light-color: $alife-green-primary;
+$navbar-light-hover-color: rgba($black, 0.9) !default;
 
 // Breadcrumbs
-$breadcrumb-padding-y:              .5rem !default;
-$breadcrumb-padding-x:              0 !default;
-$breadcrumb-item-padding:           .5rem !default;
-$breadcrumb-margin-bottom:          0 !default;
-$breadcrumb-bg:                     $alife-background;
+$breadcrumb-padding-y: 0.5rem !default;
+$breadcrumb-padding-x: 0 !default;
+$breadcrumb-item-padding: 0.5rem !default;
+$breadcrumb-margin-bottom: 0 !default;
+$breadcrumb-bg: $alife-background;
 $breadcrumb-divider: "/" !default;
 $breadcrumb-divider-rtl: "/" !default;
 
 // Alerts
-$alert-border-width:                0 !default;
+$alert-border-width: 0 !default;
 
-$card-group-margin: .25rem;
+$card-group-margin: 0.25rem;
 
 // Toasts
-$toast-color:                       $white !default;
-$toast-background-color:            rgba($gray-900, .95) !default;
-$toast-header-color:                $gray-100 !default;
-$toast-header-background-color:     rgba($white, .1) !default;
+$toast-color: $white !default;
+$toast-background-color: rgba($gray-900, 0.95) !default;
+$toast-header-color: $gray-100 !default;
+$toast-header-background-color: rgba($white, 0.1) !default;
 
 // Custom control size
 $custom-control-indicator-size: 1.25rem;
 
-$input-btn-focus-color: rgba($primary, .75) !default;
+$input-btn-focus-color: rgba($primary, 0.75) !default;
 
 $input-border-color: $gray-500 !default;
 
@@ -70,29 +71,41 @@ $dropdown-link-hover-bg: $primary;
 
 $popover-max-width: 300px !default;
 
-$border-radius: .5rem !default;
-$border-radius-lg: .6rem !default;
+$border-radius: 0.5rem !default;
+$border-radius-lg: 0.6rem !default;
 
 // stylelint-disable
 $theme-colors: () !default;
-$theme-colors: map-merge((
-    primary: $primary,
-    secondary: $secondary,
-    success: $success,
-    info: $info,
-    warning: $warning,
-    danger: $danger,
-), $theme-colors);
+$theme-colors: map-merge(
+    (
+        primary: $primary,
+        secondary: $secondary,
+        success: $success,
+        info: $info,
+        warning: $warning,
+        danger: $danger,
+    ),
+    $theme-colors
+);
 // stylelint-enable
 
 $spacer: 1rem !default;
 $spacers: (
     0: 0,
-    1: ($spacer * .25),
-    2: ($spacer * .5),
+    1: (
+        $spacer * 0.25,
+    ),
+    2: (
+        $spacer * 0.5,
+    ),
     3: $spacer,
-    4: ($spacer * 1.5),
-    5: ($spacer * 2),
-    6: ($spacer * 3)
+    4: (
+        $spacer * 1.5,
+    ),
+    5: (
+        $spacer * 2,
+    ),
+    6: (
+        $spacer * 3,
+    ),
 ) !default;
-

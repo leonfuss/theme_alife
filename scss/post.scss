@@ -6,6 +6,7 @@
 // Define ALIFE brand colours
 $alife-green-primary: #40651a;
 $alife-green-light: #eaf0e3;
+$alife-green-faq: #719834;
 $alife-purple: #926896;
 $alife-purple-light: #efe8ef;
 $alife-background: #ffffff;
@@ -26,36 +27,150 @@ $alife-background: #ffffff;
 
 .alife-header-extension {
     position: fixed;
-    top: -100px; // Extends above viewport
+    top: -100px;
     left: 0;
     right: 0;
-    height: 160px; // 100px above + 60px navbar height
-    background: linear-gradient(
-        to bottom,
-        $alife-green-light 0%,
-        $alife-green-light 100%
-    );
-    z-index: 1020; // Below navbar but above content
-    pointer-events: none; // Allow clicks through
-}
-
-// Main content area
-.alife-main-content {
-    flex: 1;
-    margin-top: 60px; // Account for fixed navbar
-    margin-bottom: 120px; // Footer will be sticky
-    z-index: 1010;
-    position: relative;
+    height: 160px;
+    background: $alife-green-light;
+    z-index: 1020;
+    pointer-events: none;
 }
 
 .alife-content {
     background: $alife-background;
 }
 
+.frontpage-actions {
+    .btn-outline-primary {
+        border: 2px solid $alife-green-primary;
+        color: $alife-green-primary;
+        background: transparent;
+        padding: 10px 18;
+        font-size: 21px;
+        border-radius: 30px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: $alife-green-primary;
+            color: white;
+            border-color: $alife-green-primary;
+        }
+    }
+}
+
+.frontpage-divider {
+    border: 0;
+    height: 2px;
+    background: $alife-green-primary;
+    opacity: 0.3;
+}
+
+// ============================================
+// ALIFE Sidebar Components
+// ============================================
+
+#alife-sidebar-wrapper {
+    position: sticky;
+    top: 80px; // Below fixed navbar
+
+    @media (max-width: 767px) {
+        position: relative;
+        top: 0;
+    }
+
+    /* @media (min-width: 992px) {
+        padding-left: 20px;
+    } */
+}
+
+#alife-course-wrapper {
+    /* @media (min-width: 992px) {
+        padding-right: 20px;
+    } */
+}
+
+// Purple "ALIFE stands for" box
+#alife-stands-for {
+    background: $alife-purple-light;
+    border-radius: 1rem;
+    margin-bottom: 20px;
+
+    .card-title {
+        color: $alife-purple;
+    }
+
+    .alife-features {
+        .alife-feature-item {
+            padding: 0.4rem 25px;
+
+            .alife-feature-icon {
+                flex-shrink: 0;
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .alife-icon {
+                    width: 32px;
+                    height: 32px;
+                    object-fit: contain;
+                }
+            }
+
+            .alife-feature-text {
+                flex: 1;
+                color: $alife-purple;
+                font-weight: 300 !important;
+            }
+        }
+    }
+}
+
+// Green FAQ box
+#frontpage-faq {
+    background: $alife-green-faq;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    overflow: hidden;
+
+    &:hover {
+        background: $alife-green-primary;
+    }
+
+    a {
+        display: block;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    .card-body {
+        min-height: 80px;
+
+        @media (max-width: 767px) {
+            min-height: 60px;
+        }
+    }
+
+    .faq-arrow {
+        transition: transform 0.2s ease;
+    }
+
+    &:hover .faq-arrow {
+        transform: translateX(4px);
+    }
+}
+
+// ============================================
 // Footer Styling
+// ============================================
+
 .alife-footer {
     background: $alife-purple !important;
-    margin-top: auto !important; // Push to bottom
+    margin-top: auto !important;
     bottom: 0;
     z-index: 1015;
     min-height: 120px !important;
@@ -77,40 +192,25 @@ $alife-background: #ffffff;
     }
 }
 
-// Footer Extension - Purple background extending downward
 .alife-footer-extension {
     position: fixed;
-    bottom: -200px; // Extends below viewport
+    bottom: -200px;
     left: 0;
     right: 0;
-    height: 201px; // 120px footer + 80px below
+    height: 201px;
     background: $alife-purple !important;
-    z-index: 1010; // Below footer but above content
-    pointer-events: none; // Allow clicks through
+    z-index: 1010;
+    pointer-events: none;
 }
 
-#alife-stands-for {
-    background: $alife-purple-light;
-}
-
-#frontpage-faq {
-    background: $alife-green-primary;
-}
-
-#alife-wrapper {
-    min-height: calc(
-        100vh - 60px - 120px
-    ); // 100vh - navbar height - footer height
-}
-
+// ============================================
 // Main navbar styling
+// ============================================
+
 .navbar {
     height: 60px;
     border-bottom: none !important;
     background-color: $alife-green-light !important;
-
-    // Remove Bootstrap's default box shadow
-    //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .primary-navigation .nav-link {
@@ -119,16 +219,13 @@ $alife-background: #ffffff;
     box-shadow: none !important;
     text-shadow: none !important;
     text-decoration: none;
-
     cursor: pointer;
 
-    // Hover state
     &:hover {
         color: $alife-green-primary !important;
         background: none !important;
     }
 
-    // Active state
     &.active {
         color: $alife-green-primary !important;
         font-weight: bold;
@@ -158,10 +255,10 @@ $alife-background: #ffffff;
 // Floating Logo Styling
 .floating-logo-container {
     position: fixed;
-    top: 25px; // Adjust based on navbar height
+    top: 25px;
     left: 60px;
     transform: translateX(-50%);
-    z-index: 1050; // Higher than navbar
+    z-index: 1050;
 
     .floating-logo-circle {
         display: block;
@@ -191,10 +288,7 @@ $alife-background: #ffffff;
 
 // Adjust main content to account for floating logo
 #page-content {
-    margin-top: 50px; // Add space for the floating logo
-}
-
-.footer-alife-logo {
+    margin-top: 50px;
 }
 
 // Responsive adjustments
@@ -202,21 +296,10 @@ $alife-background: #ffffff;
     .floating-logo-container {
         visibility: hidden;
     }
-
-    .footer-alife-logo {
-        align-items: left;
-        justify-content: left;
-    }
 }
 
 @media (min-width: 768px) {
     .navbar-spacing {
         padding-left: 130px;
-    }
-
-    .alife-footer {
-        .alife-footer-content {
-            padding: 0px 120px;
-        }
     }
 }

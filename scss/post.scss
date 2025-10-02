@@ -40,6 +40,27 @@ $alife-background: #ffffff;
     background: $alife-background;
 }
 
+.frontpage-welcome {
+    .welcome-heading {
+        font-size: 60px;
+        font-weight: 600;
+        line-height: 1.2;
+        color: $alife-green-primary;
+
+        @media (max-width: 991px) {
+            font-size: 48px;
+        }
+
+        @media (max-width: 767px) {
+            font-size: 36px;
+        }
+
+        .alife-brand {
+            color: $alife-green-primary;
+        }
+    }
+}
+
 .frontpage-actions {
     .btn-outline-primary {
         border: 2px solid $alife-green-primary;
@@ -64,6 +85,17 @@ $alife-background: #ffffff;
     height: 2px;
     background: $alife-green-primary;
     opacity: 0.3;
+}
+
+.btn {
+    padding: 8px 16px !important;
+    border-radius: 30px !important;
+    font-size: 20px !important;
+
+    @media (max-width: 767px) {
+        padding: 8px 16px !important;
+        font-size: 18px !important;
+    }
 }
 
 // ============================================

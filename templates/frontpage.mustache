@@ -19,14 +19,15 @@
                         <!-- Welcome Heading -->
                         <div class="frontpage-welcome mb-5 mt-5">
                             <h1 class="welcome-heading">
-                                {{#str}}welcome, theme_alife{{/str}}<span class="alife-brand">ALIFE</span>
+                                {{#str}}welcome, theme_alife{{/str}}
+                                <span class="alife-letter-a">A</span><span class="alife-letter-l">L</span><span class="alife-letter-i">I</span><span class="alife-letter-f">F</span><span class="alife-letter-e">E</span>
                             </h1>
                         </div>
 
                         <!-- Action Buttons - only shown when logged in -->
                         {{#output.user_logged_in}}
                         <div class="frontpage-actions mb-5">
-                            <div class="row gx-3">
+                            <div class="row gx-1">
                                 <div class="col-auto">
                                     <a href="/my/courses.php" class="btn btn-outline-primary">
                                         {{#str}}mycourses, core{{/str}}

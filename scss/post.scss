@@ -42,7 +42,7 @@ $alife-background: #ffffff;
 
 .frontpage-welcome {
     .welcome-heading {
-        font-size: 60px;
+        font-size: 55px;
         font-weight: 600;
         line-height: 1.2;
         color: $alife-green-primary;
@@ -59,6 +59,23 @@ $alife-background: #ffffff;
             color: $alife-green-primary;
         }
     }
+
+    // Multicoloured ALIFE logo
+    .alife-letter-a {
+        color: #669933;
+    } // Green
+    .alife-letter-l {
+        color: $alife-green-primary;
+    } // Green Primary
+    .alife-letter-i {
+        color: #aaaeb0;
+    } // Grey
+    .alife-letter-f {
+        color: #cc3333;
+    } // Red
+    .alife-letter-e {
+        color: $alife-purple;
+    } // Purple
 }
 
 .frontpage-actions {
@@ -66,9 +83,6 @@ $alife-background: #ffffff;
         border: 2px solid $alife-green-primary;
         color: $alife-green-primary;
         background: transparent;
-        padding: 10px 18;
-        font-size: 21px;
-        border-radius: 30px;
         font-weight: 500;
         transition: all 0.3s ease;
 
@@ -88,13 +102,26 @@ $alife-background: #ffffff;
 }
 
 .btn {
-    padding: 8px 16px !important;
+    padding: 6px 14px !important;
     border-radius: 30px !important;
-    font-size: 20px !important;
+}
 
-    @media (max-width: 767px) {
-        padding: 8px 16px !important;
-        font-size: 18px !important;
+.login {
+    a {
+        border: 1px solid $alife-green-primary;
+        padding: 6px 16px !important;
+        border-radius: 30px !important;
+        color: $alife-green-primary;
+        background: transparent;
+        font-weight: 500;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: $alife-green-primary;
+            color: white;
+            border-color: $alife-green-primary;
+            text-decoration: none !important;
+        }
     }
 }
 
@@ -233,6 +260,262 @@ $alife-background: #ffffff;
     background: $alife-purple !important;
     z-index: 1010;
     pointer-events: none;
+}
+
+// ============================================
+// Frontpage Course Cards Styling
+// ============================================
+
+// Section heading for "Verfügbare Kurse" / "Available Courses"
+// This is now handled in #frontpage-course-list and #frontpage-available-course-list
+
+// Course list container - use CSS Grid for proper layout
+// The outer wrapper should NOT be grid (it contains the h2)
+#frontpage-course-list,
+#frontpage-available-course-list {
+    // Don't make this grid - it has the h2 inside
+    display: block !important;
+
+    // Style the h2 heading
+    h2 {
+        color: $alife-green-primary;
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    // The actual courses container (frontpage-course-list-all, etc)
+    .frontpage-course-list-all,
+    .frontpage-course-list,
+    .frontpage-course-list-enrolled,
+    > div[class*="course-list"] {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1.5rem !important;
+
+        @media (max-width: 991px) {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 1.25rem !important;
+        }
+
+        @media (max-width: 767px) {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+        }
+    }
+}
+
+// Also handle if these are standalone (not inside the wrapper)
+.frontpage-course-list-all,
+.frontpage-course-list,
+.frontpage-course-list-enrolled {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1.5rem !important;
+
+    @media (max-width: 991px) {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.25rem !important;
+    }
+
+    @media (max-width: 767px) {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+}
+
+// Individual course card styling
+// Override Boost's default coursebox flex styles
+.pagelayout-frontpage .coursebox,
+#page-site-index .coursebox,
+#frontpage-course-list .coursebox,
+#frontpage-available-course-list .coursebox {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: none;
+    background: $alife-background;
+    border: none !important;
+    width: 100%; // Let grid control the width
+    margin-bottom: 0 !important; // Grid gap handles spacing
+    padding: 0 !important; // Remove all padding
+
+    // Override Boost's flex-direction: column
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100%; // Fill the grid cell
+    position: relative;
+
+    // No hover animation on the card itself
+    &:hover {
+        // Only the arrow will animate
+    }
+
+    // Hide the content wrapper completely
+    > .content {
+        display: none !important;
+    }
+
+    // Ensure courseimage-wrapper has no extra space
+    .courseimage-wrapper {
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+        position: relative;
+    }
+
+    // Course image container
+    .courseimage {
+        position: relative;
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        background: #f0f0f0;
+        flex-shrink: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        // Placeholder for courses without images
+        .course-placeholder {
+            width: 100%;
+            height: 200px;
+            background: #f0f0f0;
+        }
+    }
+
+    // Caret icon circle as HTML element
+    .course-caret-circle {
+        position: absolute;
+        bottom: -25px; // Half of height to center on border
+        right: 12px;
+        width: 50px;
+        height: 50px;
+        background: white;
+        border-radius: 50%;
+        background-image: url([[pix:theme_alife|icons/caret-right_darkgreen]]);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 20px 20px;
+        transition:
+            background-color 0.3s ease,
+            transform 0.2s ease;
+        z-index: 100;
+    }
+
+    &:hover .course-caret-circle {
+        background-color: $alife-green-light;
+        transform: translateX(4px);
+    }
+
+    // Course info section (bottom part with course shortname)
+    > .info {
+        background: $alife-green-light !important;
+        padding: 3rem 1.25rem 1.5rem 1.25rem !important;
+        position: relative;
+        flex: 1; // Fill remaining space to bottom
+        transition: background-color 0.3s ease;
+        z-index: 1; // Lower z-index so circle appears above it
+
+        h3.coursename {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: $alife-green-primary;
+            margin: 0;
+            padding-top: 0.5rem;
+            transition: color 0.3s ease;
+
+            a {
+                color: $alife-green-primary;
+                text-decoration: none !important;
+                transition: color 0.3s ease;
+
+                &:hover {
+                    text-decoration: none !important;
+                }
+            }
+        }
+    }
+
+    // Hover effect for green section
+    &:hover > .info {
+        background: $alife-green-primary !important;
+
+        h3.coursename,
+        h3.coursename a {
+            color: white !important;
+        }
+    }
+
+    // Change number badge color on hover
+    &:hover > .info::before {
+        color: white !important;
+    }
+
+    // Hide elements we don't want to show
+    .summary,
+    .coursecat,
+    .course-contacts,
+    .customfields-container {
+        display: none !important;
+    }
+
+    .enrolmenticons {
+        display: none !important;
+    }
+}
+
+// Number badges for first 20 courses using nth-child
+.coursebox:nth-child(1) > .info::before {
+    content: "01";
+}
+.coursebox:nth-child(2) > .info::before {
+    content: "02";
+}
+.coursebox:nth-child(3) > .info::before {
+    content: "03";
+}
+.coursebox:nth-child(4) > .info::before {
+    content: "04";
+}
+.coursebox:nth-child(5) > .info::before {
+    content: "05";
+}
+.coursebox:nth-child(6) > .info::before {
+    content: "06";
+}
+.coursebox:nth-child(7) > .info::before {
+    content: "07";
+}
+.coursebox:nth-child(8) > .info::before {
+    content: "08";
+}
+.coursebox:nth-child(9) > .info::before {
+    content: "09";
+}
+.coursebox:nth-child(10) > .info::before {
+    content: "10";
+}
+.coursebox:nth-child(11) > .info::before {
+    content: "11";
+}
+.coursebox:nth-child(12) > .info::before {
+    content: "12";
+}
+
+.coursebox > .info::before {
+    position: absolute;
+    top: 1rem;
+    left: 1.25rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: $alife-green-primary;
+    z-index: 10;
 }
 
 // ============================================

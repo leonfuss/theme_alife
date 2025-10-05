@@ -24,11 +24,12 @@ $string["rawscsspre_desc"] =
 //fronpage
 $string["welcome"] = "Willkommen bei ";
 $string["alife_stands_for"] = "ALIFE - Das steht für:";
-$string["adaptive"] = "Adaptive";
+$string["adaptive"] = "Adaptiv";
 $string["evidence"] = "Evidenzbasiert";
 $string["effective"] = "Wirksam";
 $string["up-to-date"] = "Aktuell";
 $string["continuelearning"] = "Weiterlernen";
+$string["verfuegbare_kurse"] = "Verfügbare Kurse";
 
 // footer
 $string["contact"] = "Kontakt";

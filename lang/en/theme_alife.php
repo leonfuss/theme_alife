@@ -25,11 +25,12 @@ $string["rawscsspre_desc"] =
 // frontpage
 $string["welcome"] = "Welcome to ";
 $string["alife_stands_for"] = "ALIFE stands for:";
-$string["adaptive"] = "adaptive";
-$string["evidence"] = "evidence based";
-$string["effective"] = "effective";
-$string["up-to-date"] = "up-to-date";
+$string["adaptive"] = "Adaptive";
+$string["evidence"] = "Evidence based";
+$string["effective"] = "Effective";
+$string["up-to-date"] = "Up-to-date";
 $string["continuelearning"] = "Continue Learning";
+$string["verfuegbare_kurse"] = "Available Courses";
 
 // footer
 $string["contact"] = "Contact";

@@ -148,12 +148,12 @@ class course_renderer extends \core_course_renderer {
 
     /**
      * Returns HTML to display list of available courses for frontpage
-     * Enhanced with Bootstrap grid
+     * Enhanced with Bootstrap grid and custom field filtering/sorting
      *
      * @return string
      */
     public function frontpage_available_courses() {
-        global $CFG;
+        global $CFG, $DB;
 
         $chelper = new coursecat_helper();
         $chelper->set_show_courses(self::COURSECAT_SHOW_COURSES_EXPANDED)->
@@ -165,12 +165,56 @@ class course_renderer extends \core_course_renderer {
 
         $chelper->set_attributes(array('class' => 'frontpage-course-list-all'));
         $courses = core_course_category::top()->get_courses($chelper->get_courses_display_options());
-        $totalcount = core_course_category::top()->get_courses_count($chelper->get_courses_display_options());
+
+        // Filter and sort courses based on custom fields
+        $filteredcourses = array();
+
+        foreach ($courses as $course) {
+            $handler = \core_customfield\handler::get_handler('core_course', 'course');
+            $datas = $handler->get_instance_data($course->id);
+
+            $showonfrontpage = false;
+            $priority = 999; // Default priority (lower number = higher priority)
+
+            foreach ($datas as $data) {
+                $fieldname = $data->get_field()->get('shortname');
+
+                // Check "Show on Frontpage" checkbox
+                if ($fieldname === 'showonfrontpage' && $data->get_value()) {
+                    $showonfrontpage = true;
+                }
+
+                // Get frontpage priority
+                if ($fieldname === 'frontpagepriority' && $data->get_value()) {
+                    $priority = (int)$data->get_value();
+                }
+            }
+
+            // Only include courses marked to show on frontpage
+            if ($showonfrontpage) {
+                $course->frontpage_priority = $priority;
+                $filteredcourses[] = $course;
+            }
+        }
+
+        // If no courses have the custom field set, show all courses (backwards compatibility)
+        if (empty($filteredcourses)) {
+            $filteredcourses = $courses;
+        } else {
+            // Sort by priority (lower number first)
+            usort($filteredcourses, function($a, $b) {
+                $prioritya = isset($a->frontpage_priority) ? $a->frontpage_priority : 999;
+                $priorityb = isset($b->frontpage_priority) ? $b->frontpage_priority : 999;
+                return $prioritya - $priorityb;
+            });
+        }
+
+        $totalcount = count($filteredcourses);
 
         if (!$totalcount && !$this->page->user_is_editing() && has_capability('moodle/course:create', context_system::instance())) {
             return $this->add_new_course_button();
         }
 
-        return $this->coursecat_courses($chelper, $courses, $totalcount);
+        return $this->coursecat_courses($chelper, $filteredcourses, $totalcount);
     }
 }

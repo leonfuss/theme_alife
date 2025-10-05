@@ -99,6 +99,8 @@ $alife-background: #ffffff;
     height: 2px;
     background: $alife-green-primary;
     opacity: 0.3;
+    margin-top: 2.5rem !important;
+    margin-bottom: 2rem !important;
 }
 
 .btn {
@@ -309,7 +311,8 @@ $alife-background: #ffffff;
 // Also handle if these are standalone (not inside the wrapper)
 .frontpage-course-list-all,
 .frontpage-course-list,
-.frontpage-course-list-enrolled {
+.frontpage-course-list-enrolled,
+.course_category_tree .courses {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 1.5rem !important;
@@ -330,7 +333,8 @@ $alife-background: #ffffff;
 .pagelayout-frontpage .coursebox,
 #page-site-index .coursebox,
 #frontpage-course-list .coursebox,
-#frontpage-available-course-list .coursebox {
+#frontpage-available-course-list .coursebox,
+.course_category_tree .coursebox {
     position: relative;
     border-radius: 1rem;
     overflow: hidden;

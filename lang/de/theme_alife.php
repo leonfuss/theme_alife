@@ -30,6 +30,7 @@ $string["effective"] = "Wirksam";
 $string["up-to-date"] = "Aktuell";
 $string["continuelearning"] = "Weiterlernen";
 $string["verfuegbare_kurse"] = "Verfügbare Kurse";
+$string["allcourses"] = "Alle Kurse";
 
 // footer
 $string["contact"] = "Kontakt";

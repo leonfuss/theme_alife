@@ -2,7 +2,20 @@
 
 This document explains how to control which courses appear on the frontpage and in what order.
 
-## Setup Instructions
+## Automatic Setup
+
+**The custom fields are created automatically when the theme is installed or upgraded!**
+
+When you install or upgrade the ALIFE theme, it will automatically create:
+- A custom field category called "Frontpage Settings"
+- A checkbox field: "Show on Frontpage" (shortname: `showonfrontpage`)
+- A text field: "Frontpage Priority" (shortname: `frontpagepriority`)
+
+You can verify they exist by going to **Site administration → Courses → Course custom fields**.
+
+## Manual Setup (if needed)
+
+If for some reason the fields weren't created automatically, you can create them manually:
 
 ### 1. Create Custom Course Fields
 

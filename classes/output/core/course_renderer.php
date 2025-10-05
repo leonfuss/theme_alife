@@ -168,6 +168,7 @@ class course_renderer extends \core_course_renderer {
 
         // Filter and sort courses based on custom fields
         $filteredcourses = array();
+        $priorities = array(); // Store priorities separately
 
         foreach ($courses as $course) {
             $handler = \core_customfield\handler::get_handler('core_course', 'course');
@@ -185,15 +186,18 @@ class course_renderer extends \core_course_renderer {
                 }
 
                 // Get frontpage priority
-                if ($fieldname === 'frontpagepriority' && $data->get_value()) {
-                    $priority = (int)$data->get_value();
+                if ($fieldname === 'frontpagepriority') {
+                    $value = $data->get_value();
+                    if ($value !== null && $value !== '' && $value !== false) {
+                        $priority = (int)$value;
+                    }
                 }
             }
 
             // Only include courses marked to show on frontpage
             if ($showonfrontpage) {
-                $course->frontpage_priority = $priority;
                 $filteredcourses[] = $course;
+                $priorities[$course->id] = $priority;
             }
         }
 
@@ -202,9 +206,9 @@ class course_renderer extends \core_course_renderer {
             $filteredcourses = $courses;
         } else {
             // Sort by priority (lower number first)
-            usort($filteredcourses, function($a, $b) {
-                $prioritya = isset($a->frontpage_priority) ? $a->frontpage_priority : 999;
-                $priorityb = isset($b->frontpage_priority) ? $b->frontpage_priority : 999;
+            usort($filteredcourses, function($a, $b) use ($priorities) {
+                $prioritya = isset($priorities[$a->id]) ? $priorities[$a->id] : 999;
+                $priorityb = isset($priorities[$b->id]) ? $priorities[$b->id] : 999;
                 return $prioritya - $priorityb;
             });
         }

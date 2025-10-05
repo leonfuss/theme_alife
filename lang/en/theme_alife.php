@@ -36,3 +36,32 @@ $string["allcourses"] = "All Courses";
 // footer
 $string["contact"] = "Contact";
 $string["privacy_policy"] = "Privacy Policy";
+
+// Team Members settings
+$string['team_settings'] = 'Team Members Settings';
+$string['team_members'] = 'Team Members';
+$string['team_members_desc'] = 'Configure team members to display on the "Who we are" page';
+
+$string['member_count'] = 'Number of team members';
+$string['member_count_desc'] = 'Number of team members to display';
+
+$string['member_enabled'] = 'Enable team member {$a}';
+$string['member_enabled_desc'] = 'Show this team member on the page';
+
+$string['member_name'] = 'Name (Team member {$a})';
+$string['member_name_desc'] = 'Full name of the team member (e.g., Dr. Tim Fütterer)';
+
+$string['member_photo'] = 'Photo (Team member {$a})';
+$string['member_photo_desc'] = 'Upload a photo of the team member';
+
+$string['member_bio_de'] = 'Biography in German (Team member {$a})';
+$string['member_bio_de_desc'] = 'Team member biography in German';
+
+$string['member_bio_en'] = 'Biography in English (Team member {$a})';
+$string['member_bio_en_desc'] = 'Team member biography in English';
+
+$string['member_url'] = 'Website URL (Team member {$a})';
+$string['member_url_desc'] = 'Link to personal or institutional website';
+
+$string['member_sortorder'] = 'Display order (Team member {$a})';
+$string['member_sortorder_desc'] = 'Order in which this member appears (lower numbers first)';

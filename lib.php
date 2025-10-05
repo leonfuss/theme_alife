@@ -10,7 +10,7 @@ function theme_alife_get_main_scss_content($theme) {
     $context = context_system::instance();
 
     if ($filename == 'default.scss') {
-        // We still load the default preset files directly from the boost theme. 
+        // We still load the default preset files directly from the boost theme.
         $scss .= file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/default.scss');
     } else if ($filename == 'plain.scss') {
         // We still load the default preset files directly from the boost theme.
@@ -26,8 +26,36 @@ function theme_alife_get_main_scss_content($theme) {
 
     // Pre CSS - this is loaded AFTER any prescss from the setting but before the main scss.
     $pre = file_get_contents($CFG->dirroot . '/theme/alife/scss/pre.scss');
-    // Post CSS - this is loaded AFTER the main scss but before the extra scss from the setting.               
-    $post = file_get_contents($CFG->dirroot . '/theme/alife/scss/post.scss');   
+    // Post CSS - this is loaded AFTER the main scss but before the extra scss from the setting.
+    $post = file_get_contents($CFG->dirroot . '/theme/alife/scss/post.scss');
 
     return $pre . "\n" . $scss . "\n" . $post;
+}
+
+/**
+ * Serves files from theme file areas
+ *
+ * @param stdClass $course
+ * @param stdClass $cm
+ * @param context $context
+ * @param string $filearea
+ * @param array $args
+ * @param bool $forcedownload
+ * @param array $options
+ * @return bool
+ */
+function theme_alife_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
+    if ($context->contextlevel == CONTEXT_SYSTEM &&
+        (strpos($filearea, 'member_') === 0 && strpos($filearea, '_photo') !== false)) {
+
+        $theme = theme_config::load('alife');
+
+        if (!array_key_exists('cacheability', $options)) {
+            $options['cacheability'] = 'public';
+        }
+
+        return $theme->setting_file_serve($filearea, $args, $forcedownload, $options);
+    }
+
+    send_file_not_found();
 }

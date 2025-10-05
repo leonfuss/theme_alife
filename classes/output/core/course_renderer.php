@@ -39,6 +39,8 @@ class course_renderer extends \core_course_renderer {
      * @return string
      */
     protected function coursecat_coursebox(coursecat_helper $chelper, $course, $additionalclasses = '') {
+        global $PAGE;
+
         if (!isset($this->strings->summary)) {
             $this->strings->summary = get_string('summary');
         }

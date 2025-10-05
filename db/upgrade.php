@@ -71,22 +71,22 @@ function xmldb_theme_alife_upgrade($oldversion) {
             $DB->insert_record('customfield_field', $showfield);
         }
 
-        // Create "Frontpage Priority" text field
-        $priorityfield = $DB->get_record('customfield_field', [
-            'shortname' => 'frontpagepriority',
+        // Create "Course Numbering" text field (renamed from priority)
+        $numberingfield = $DB->get_record('customfield_field', [
+            'shortname' => 'coursenumbering',
             'type' => 'text'
         ]);
 
-        if (!$priorityfield) {
-            $priorityfield = new stdClass();
-            $priorityfield->shortname = 'frontpagepriority';
-            $priorityfield->name = 'Frontpage Priority';
-            $priorityfield->type = 'text';
-            $priorityfield->description = '<p>Priority for frontpage display (lower number = higher priority). Example: 1, 2, 3, etc.</p>';
-            $priorityfield->descriptionformat = FORMAT_HTML;
-            $priorityfield->sortorder = 1;
-            $priorityfield->categoryid = $category->id;
-            $priorityfield->configdata = json_encode([
+        if (!$numberingfield) {
+            $numberingfield = new stdClass();
+            $numberingfield->shortname = 'coursenumbering';
+            $numberingfield->name = 'Course Numbering';
+            $numberingfield->type = 'text';
+            $numberingfield->description = '<p>Number to display on course card and for sorting. Example: 1, 2, 3, etc.</p>';
+            $numberingfield->descriptionformat = FORMAT_HTML;
+            $numberingfield->sortorder = 1;
+            $numberingfield->categoryid = $category->id;
+            $numberingfield->configdata = json_encode([
                 'required' => 0,
                 'uniquevalues' => 0,
                 'defaultvalue' => '999',
@@ -97,13 +97,31 @@ function xmldb_theme_alife_upgrade($oldversion) {
                 'ispassword' => 0,
                 'link' => ''
             ]);
-            $priorityfield->timecreated = time();
-            $priorityfield->timemodified = time();
+            $numberingfield->timecreated = time();
+            $numberingfield->timemodified = time();
 
-            $DB->insert_record('customfield_field', $priorityfield);
+            $DB->insert_record('customfield_field', $numberingfield);
         }
 
         upgrade_plugin_savepoint(true, 2025090302, 'theme', 'alife');
+    }
+
+    // Rename frontpagepriority to coursenumbering
+    if ($oldversion < 2025090303) {
+        // Update the old field if it exists
+        $oldfield = $DB->get_record('customfield_field', [
+            'shortname' => 'frontpagepriority'
+        ]);
+
+        if ($oldfield) {
+            $oldfield->shortname = 'coursenumbering';
+            $oldfield->name = 'Course Numbering';
+            $oldfield->description = '<p>Number to display on course card and for sorting. Example: 1, 2, 3, etc.</p>';
+            $oldfield->timemodified = time();
+            $DB->update_record('customfield_field', $oldfield);
+        }
+
+        upgrade_plugin_savepoint(true, 2025090303, 'theme', 'alife');
     }
 
     return true;

@@ -100,7 +100,7 @@ $alife-background: #ffffff;
     background: $alife-green-primary;
     opacity: 0.3;
     margin-top: 2.5rem !important;
-    margin-bottom: 2rem !important;
+    margin-bottom: 1rem !important;
 }
 
 .btn {
@@ -125,6 +125,59 @@ $alife-background: #ffffff;
             text-decoration: none !important;
         }
     }
+}
+
+// ============================================
+// Search Bar Styling
+// ============================================
+
+.input-group {
+    // Add gap between input and button
+    gap: 0.5rem !important;
+    flex-wrap: nowrap !important;
+
+    .form-control,
+    input[type="text"].form-control {
+        border-radius: 30px !important;
+        border-top-right-radius: 30px !important;
+        border-bottom-right-radius: 30px !important;
+    }
+
+    .input-group-append {
+        margin-left: 0 !important;
+
+        .btn,
+        button.btn {
+            border-radius: 30px !important;
+            border-top-left-radius: 30px !important;
+            border-bottom-left-radius: 30px !important;
+        }
+    }
+}
+
+// Additional specificity for search forms
+form[role="search"],
+.simplesearchform {
+    .input-group {
+        gap: 0.5rem !important;
+
+        input[type="text"] {
+            border-radius: 30px !important;
+        }
+
+        button[type="submit"] {
+            border-radius: 30px !important;
+        }
+    }
+}
+
+// Input focus styling - only outline, no shadow
+.form-control:focus,
+input[type="text"]:focus {
+    border-color: $alife-green-primary !important;
+    box-shadow: none !important;
+    outline: 2px solid $alife-green-primary !important;
+    outline-offset: 0px !important;
 }
 
 // ============================================
@@ -457,7 +510,7 @@ $alife-background: #ffffff;
     }
 
     // Change number badge color on hover
-    &:hover > .info::before {
+    &:hover .course-number-badge {
         color: white !important;
     }
 
@@ -474,52 +527,16 @@ $alife-background: #ffffff;
     }
 }
 
-// Number badges for first 20 courses using nth-child
-.coursebox:nth-child(1) > .info::before {
-    content: "01";
-}
-.coursebox:nth-child(2) > .info::before {
-    content: "02";
-}
-.coursebox:nth-child(3) > .info::before {
-    content: "03";
-}
-.coursebox:nth-child(4) > .info::before {
-    content: "04";
-}
-.coursebox:nth-child(5) > .info::before {
-    content: "05";
-}
-.coursebox:nth-child(6) > .info::before {
-    content: "06";
-}
-.coursebox:nth-child(7) > .info::before {
-    content: "07";
-}
-.coursebox:nth-child(8) > .info::before {
-    content: "08";
-}
-.coursebox:nth-child(9) > .info::before {
-    content: "09";
-}
-.coursebox:nth-child(10) > .info::before {
-    content: "10";
-}
-.coursebox:nth-child(11) > .info::before {
-    content: "11";
-}
-.coursebox:nth-child(12) > .info::before {
-    content: "12";
-}
-
-.coursebox > .info::before {
+// Number badge styling - HTML element in green section
+.course-number-badge {
     position: absolute;
-    top: 1rem;
+    top: 0.7rem;
     left: 1.25rem;
     font-size: 2rem;
     font-weight: 700;
     color: $alife-green-primary;
     z-index: 10;
+    transition: color 0.3s ease;
 }
 
 // ============================================

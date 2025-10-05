@@ -27,6 +27,9 @@ use context_course;
  */
 class course_renderer extends \core_course_renderer {
 
+    /** @var array Course numbering from custom fields */
+    protected $course_numbering = array();
+
     /**
      * Renders HTML to display a course content on frontpage
      *
@@ -56,11 +59,34 @@ class course_renderer extends \core_course_renderer {
         // Course URL for click handler
         $courseurl = new moodle_url('/course/view.php', array('id' => $course->id));
 
+        // Get course numbering from custom field
+        $coursenumber = '';
+        if (isset($this->course_numbering[$course->id])) {
+            $coursenumber = str_pad($this->course_numbering[$course->id], 2, '0', STR_PAD_LEFT);
+        } else {
+            // If not in array, get it directly from custom field (for All Courses page)
+            $handler = \core_customfield\handler::get_handler('core_course', 'course');
+            $datas = $handler->get_instance_data($course->id);
+
+            foreach ($datas as $data) {
+                $fieldname = $data->get_field()->get('shortname');
+
+                if ($fieldname === 'coursenumbering' || $fieldname === 'frontpagepriority') {
+                    $value = $data->get_value();
+                    if ($value !== null && $value !== '' && $value !== false) {
+                        $coursenumber = str_pad((int)$value, 2, '0', STR_PAD_LEFT);
+                        break;
+                    }
+                }
+            }
+        }
+
         // Start coursebox wrapper with onclick handler
         $content .= html_writer::start_tag('div', array(
             'class' => $classes,
             'data-courseid' => $course->id,
             'data-type' => self::COURSECAT_TYPE_COURSE,
+            'data-coursenumber' => $coursenumber,
             'onclick' => 'window.location.href=\'' . $courseurl->out() . '\'',
             'style' => 'cursor: pointer;'
         ));
@@ -76,6 +102,11 @@ class course_renderer extends \core_course_renderer {
 
         // Course info section (with shortname and number badge)
         $content .= html_writer::start_tag('div', array('class' => 'info'));
+
+        // Add number badge if available
+        if (!empty($coursenumber)) {
+            $content .= html_writer::tag('div', $coursenumber, array('class' => 'course-number-badge'));
+        }
 
         // Use shortname instead of fullname
         $coursename = html_writer::tag('h3',
@@ -168,14 +199,14 @@ class course_renderer extends \core_course_renderer {
 
         // Filter and sort courses based on custom fields
         $filteredcourses = array();
-        $priorities = array(); // Store priorities separately
+        $numbering = array(); // Store course numbering separately
 
         foreach ($courses as $course) {
             $handler = \core_customfield\handler::get_handler('core_course', 'course');
             $datas = $handler->get_instance_data($course->id);
 
             $showonfrontpage = false;
-            $priority = 999; // Default priority (lower number = higher priority)
+            $coursenumber = 999; // Default numbering (lower number = displayed first)
 
             foreach ($datas as $data) {
                 $fieldname = $data->get_field()->get('shortname');
@@ -185,11 +216,11 @@ class course_renderer extends \core_course_renderer {
                     $showonfrontpage = true;
                 }
 
-                // Get frontpage priority
-                if ($fieldname === 'frontpagepriority') {
+                // Get course numbering (also check old field name for backwards compatibility)
+                if ($fieldname === 'coursenumbering' || $fieldname === 'frontpagepriority') {
                     $value = $data->get_value();
                     if ($value !== null && $value !== '' && $value !== false) {
-                        $priority = (int)$value;
+                        $coursenumber = (int)$value;
                     }
                 }
             }
@@ -197,7 +228,7 @@ class course_renderer extends \core_course_renderer {
             // Only include courses marked to show on frontpage
             if ($showonfrontpage) {
                 $filteredcourses[] = $course;
-                $priorities[$course->id] = $priority;
+                $numbering[$course->id] = $coursenumber;
             }
         }
 
@@ -205,13 +236,16 @@ class course_renderer extends \core_course_renderer {
         if (empty($filteredcourses)) {
             $filteredcourses = $courses;
         } else {
-            // Sort by priority (lower number first)
-            usort($filteredcourses, function($a, $b) use ($priorities) {
-                $prioritya = isset($priorities[$a->id]) ? $priorities[$a->id] : 999;
-                $priorityb = isset($priorities[$b->id]) ? $priorities[$b->id] : 999;
-                return $prioritya - $priorityb;
+            // Sort by numbering (lower number first)
+            usort($filteredcourses, function($a, $b) use ($numbering) {
+                $numbera = isset($numbering[$a->id]) ? $numbering[$a->id] : 999;
+                $numberb = isset($numbering[$b->id]) ? $numbering[$b->id] : 999;
+                return $numbera - $numberb;
             });
         }
+
+        // Store numbering for use in coursecat_coursebox
+        $this->course_numbering = $numbering;
 
         $totalcount = count($filteredcourses);
 
@@ -220,5 +254,64 @@ class course_renderer extends \core_course_renderer {
         }
 
         return $this->coursecat_courses($chelper, $filteredcourses, $totalcount);
+    }
+
+    /**
+     * Renders the list of courses
+     * Override to sort by course numbering custom field
+     *
+     * @param coursecat_helper $chelper various display options
+     * @param array $courses the list of courses to display
+     * @param int|null $totalcount total number of courses (affects display mode if it is AUTO or pagination if applicable),
+     *     defaulted to count($courses)
+     * @return string
+     */
+    protected function coursecat_courses(coursecat_helper $chelper, $courses, $totalcount = null) {
+        global $CFG;
+
+        if ($totalcount === null) {
+            $totalcount = count($courses);
+        }
+
+        if (!$totalcount) {
+            return '';
+        }
+
+        // Get numbering for all courses and sort them
+        $numbering = array();
+        foreach ($courses as $course) {
+            $handler = \core_customfield\handler::get_handler('core_course', 'course');
+            $datas = $handler->get_instance_data($course->id);
+
+            $coursenumber = 999; // Default
+
+            foreach ($datas as $data) {
+                $fieldname = $data->get_field()->get('shortname');
+
+                if ($fieldname === 'coursenumbering' || $fieldname === 'frontpagepriority') {
+                    $value = $data->get_value();
+                    if ($value !== null && $value !== '' && $value !== false) {
+                        $coursenumber = (int)$value;
+                        break;
+                    }
+                }
+            }
+
+            $numbering[$course->id] = $coursenumber;
+        }
+
+        // Sort courses by numbering
+        $coursesarray = array_values($courses);
+        usort($coursesarray, function($a, $b) use ($numbering) {
+            $numbera = isset($numbering[$a->id]) ? $numbering[$a->id] : 999;
+            $numberb = isset($numbering[$b->id]) ? $numbering[$b->id] : 999;
+            return $numbera - $numberb;
+        });
+
+        // Store numbering for use in coursecat_coursebox
+        $this->course_numbering = $numbering;
+
+        // Call parent method with sorted courses
+        return parent::coursecat_courses($chelper, $coursesarray, $totalcount);
     }
 }

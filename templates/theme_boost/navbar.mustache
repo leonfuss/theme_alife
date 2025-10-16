@@ -1,6 +1,6 @@
 <nav class="navbar fixed-top navbar-light bg-white navbar-expand navbar-spacing" aria-label="{{#str}}sitemenubar, admin{{/str}}">
     <div class="container-fluid">
-    	
+
         <button class="navbar-toggler aabtn d-block d-md-none px-1 my-1 border-0" data-toggler="drawers" data-action="toggle" data-target="theme_boost-drawers-primary">
             <span class="navbar-toggler-icon"></span>
             <span class="sr-only">{{#str}}sidepanel, core{{/str}}</span>
@@ -39,12 +39,14 @@
 
 <!-- Floating Logo Circle -->
 {{# output.should_display_navbar_logo }}
+{{^output.is_course_page}}
+
 <div class="floating-logo-container">
     <a href="{{{ config.homeurl }}}" class="floating-logo-circle">
         <img src="{{output.get_compact_logo_url}}" alt="{{sitename}}" class="floating-logo-img">
     </a>
 </div>
+{{/output.is_course_page}}
 {{/ output.should_display_navbar_logo }}
 
 {{> theme_boost/primary-drawer-mobile }}
-

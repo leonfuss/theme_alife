@@ -334,6 +334,13 @@ input[type="text"]:focus {
     pointer-events: none;
 }
 
+.drawers {
+    .alife-footer,
+    .alife-footer-extension {
+        display: none !important;
+    }
+}
+
 // ============================================
 // Frontpage Course Cards Styling
 // ============================================

@@ -15,4 +15,15 @@ class core_renderer extends \theme_boost\output\core_renderer
     {
         return isloggedin() && !isguestuser();
     }
+
+    /**
+     * Check if current page is a course page (to hide footer)
+     *
+     * @return bool
+     */
+    public function is_course_page()
+    {
+        global $PAGE;
+        return in_array($PAGE->pagelayout, ["course", "incourse"]);
+    }
 }

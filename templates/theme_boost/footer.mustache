@@ -1,4 +1,5 @@
-<footer id="page-footer" class="alife-footer mw-100">
+<footer id="page-footer" {{^output.is_course_page}}class="alife-footer mw-100"{{/output.is_course_page}}>
+{{^output.is_course_page}}
     <div class="alife-footer-content container-fluid py-4 d-flex align-items-end px-3 px-md-4 px-lg-5" style="min-height: 120px;">
         <div class="row w-100 align-items-baseline flex-nowrap mx-0 mb-2">
             <!-- Left side: Navigation links -->
@@ -32,15 +33,19 @@
             </div>
         </div>
 
-        <!-- Moodle's standard footer content (hidden but preserved for functionality) -->
-        <div class="d-none">
-            <div class="logininfo">
-                {{{ output.login_info }}}
-            </div>
-            {{{ output.standard_footer_html }}}
-            {{{ output.standard_end_of_body_html }}}
-        </div>
     </div>
+    {{/output.is_course_page}}
+
+
+    <!-- Moodle's standard footer content (hidden but preserved for functionality) -->
+    <div class="d-none">
+        <div class="logininfo">
+            {{{ output.login_info }}}
+        </div>
+        {{{ output.standard_footer_html }}}
+        {{{ output.standard_end_of_body_html }}}
+    </div>
+
 
     <div class="footer-content-debugging footer-dark bg-dark text-light">
         <div class="container-fluid footer-dark-inner">

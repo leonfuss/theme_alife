@@ -64,3 +64,32 @@ $string['member_url_desc'] = 'Link zur persönlichen oder institutionellen Websi
 
 $string['member_sortorder'] = 'Anzeigereihenfolge (Team-Mitglied {$a})';
 $string['member_sortorder_desc'] = 'Reihenfolge, in der dieses Mitglied erscheint (niedrigere Zahlen zuerst)';
+
+// FAQ settings
+$string['faq_settings'] = 'FAQ Einstellungen';
+$string['faq_item'] = 'FAQ Eintrag {$a}';
+
+$string['faq_count'] = 'Anzahl der FAQ-Einträge';
+$string['faq_count_desc'] = 'Anzahl der anzuzeigenden FAQ-Einträge';
+
+$string['faq_enabled'] = 'FAQ-Eintrag {$a} aktivieren';
+$string['faq_enabled_desc'] = 'Diesen FAQ-Eintrag auf der FAQ-Seite anzeigen';
+
+$string['faq_question_de'] = 'Frage auf Deutsch (FAQ {$a})';
+$string['faq_question_de_desc'] = 'Der Fragetext auf Deutsch';
+
+$string['faq_question_en'] = 'Frage auf Englisch (FAQ {$a})';
+$string['faq_question_en_desc'] = 'Der Fragetext auf Englisch';
+
+$string['faq_answer_de'] = 'Antwort auf Deutsch (FAQ {$a})';
+$string['faq_answer_de_desc'] = 'Der Antworttext auf Deutsch (HTML-Editor)';
+
+$string['faq_answer_en'] = 'Antwort auf Englisch (FAQ {$a})';
+$string['faq_answer_en_desc'] = 'Der Antworttext auf Englisch (HTML-Editor)';
+
+$string['faq_sortorder'] = 'Anzeigereihenfolge (FAQ {$a})';
+$string['faq_sortorder_desc'] = 'Reihenfolge, in der diese FAQ erscheint (niedrigere Zahlen zuerst)';
+
+$string['faq_page_title'] = 'Häufig gestellte Fragen';
+$string['faq_heading'] = 'FAQ';
+$string['no_faq_items'] = 'Es wurden noch keine FAQ-Einträge konfiguriert.';

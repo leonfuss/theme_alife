@@ -65,3 +65,32 @@ $string['member_url_desc'] = 'Link to personal or institutional website';
 
 $string['member_sortorder'] = 'Display order (Team member {$a})';
 $string['member_sortorder_desc'] = 'Order in which this member appears (lower numbers first)';
+
+// FAQ settings
+$string['faq_settings'] = 'FAQ Settings';
+$string['faq_item'] = 'FAQ Item {$a}';
+
+$string['faq_count'] = 'Number of FAQ items';
+$string['faq_count_desc'] = 'Number of FAQ items to display';
+
+$string['faq_enabled'] = 'Enable FAQ item {$a}';
+$string['faq_enabled_desc'] = 'Show this FAQ item on the FAQ page';
+
+$string['faq_question_de'] = 'Question in German (FAQ {$a})';
+$string['faq_question_de_desc'] = 'The question text in German';
+
+$string['faq_question_en'] = 'Question in English (FAQ {$a})';
+$string['faq_question_en_desc'] = 'The question text in English';
+
+$string['faq_answer_de'] = 'Answer in German (FAQ {$a})';
+$string['faq_answer_de_desc'] = 'The answer text in German (HTML editor)';
+
+$string['faq_answer_en'] = 'Answer in English (FAQ {$a})';
+$string['faq_answer_en_desc'] = 'The answer text in English (HTML editor)';
+
+$string['faq_sortorder'] = 'Display order (FAQ {$a})';
+$string['faq_sortorder_desc'] = 'Order in which this FAQ appears (lower numbers first)';
+
+$string['faq_page_title'] = 'Frequently Asked Questions';
+$string['faq_heading'] = 'FAQ';
+$string['no_faq_items'] = 'No FAQ items have been configured yet.';

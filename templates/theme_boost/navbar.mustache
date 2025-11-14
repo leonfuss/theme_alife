@@ -1,10 +1,28 @@
-<nav class="navbar fixed-top navbar-light bg-white navbar-expand navbar-spacing" aria-label="{{#str}}sitemenubar, admin{{/str}}">
+<nav class="navbar fixed-top navbar-light bg-white navbar-expand" aria-label="{{#str}}sitemenubar, admin{{/str}}">
     <div class="container-fluid">
 
         <button class="navbar-toggler aabtn d-block d-md-none px-1 my-1 border-0" data-toggler="drawers" data-action="toggle" data-target="theme_boost-drawers-primary">
             <span class="navbar-toggler-icon"></span>
             <span class="sr-only">{{#str}}sidepanel, core{{/str}}</span>
         </button>
+
+        {{# output.should_display_navbar_logo }}
+            <a href="{{{ config.homeurl }}}" class="navbar-brand {{# output.get_compact_logo_url }}has-logo{{/ output.get_compact_logo_url }}
+                {{^ output.get_compact_logo_url }}
+                    d-flex
+                    align-items-center
+                    text-decoration-none
+                    me-1
+                {{/ output.get_compact_logo_url }}
+                ">
+                {{# output.get_compact_logo_url }}
+                    <img src="{{output.get_compact_logo_url}}" class="logo me-1" alt="{{sitename}}">
+                {{/ output.get_compact_logo_url }}
+                {{^ output.get_compact_logo_url }}
+                    <span class="site-name">{{{ sitename }}}</span>
+                {{/ output.get_compact_logo_url }}
+            </a>
+        {{/ output.should_display_navbar_logo }}
 
         {{#primarymoremenu}}
             <div class="primary-navigation">
@@ -36,17 +54,5 @@
         </div>
     </div>
 </nav>
-
-<!-- Floating Logo Circle -->
-{{# output.should_display_navbar_logo }}
-{{^output.is_course_page}}
-
-<div class="floating-logo-container">
-    <a href="{{{ config.homeurl }}}" class="floating-logo-circle">
-        <img src="{{output.get_compact_logo_url}}" alt="{{sitename}}" class="floating-logo-img">
-    </a>
-</div>
-{{/output.is_course_page}}
-{{/ output.should_display_navbar_logo }}
 
 {{> theme_boost/primary-drawer-mobile }}

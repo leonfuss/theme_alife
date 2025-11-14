@@ -124,5 +124,66 @@ function xmldb_theme_alife_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2025090303, 'theme', 'alife');
     }
 
+    // Add Course Subnumbering field for subcourses
+    if ($oldversion < 2025100602) {
+        // Get the custom field category
+        $category = $DB->get_record('customfield_category', [
+            'component' => 'core_course',
+            'area' => 'course',
+            'name' => 'Frontpage Settings'
+        ]);
+
+        // If category doesn't exist, create it
+        if (!$category) {
+            $category = new stdClass();
+            $category->name = 'Frontpage Settings';
+            $category->description = 'Settings for controlling course display on frontpage';
+            $category->descriptionformat = FORMAT_HTML;
+            $category->sortorder = 0;
+            $category->timecreated = time();
+            $category->timemodified = time();
+            $category->component = 'core_course';
+            $category->area = 'course';
+            $category->itemid = 0;
+            $category->contextid = context_system::instance()->id;
+
+            $category->id = $DB->insert_record('customfield_category', $category);
+        }
+
+        // Create "Course Subnumbering" text field
+        $subnumberingfield = $DB->get_record('customfield_field', [
+            'shortname' => 'coursesubnumbering',
+            'type' => 'text'
+        ]);
+
+        if (!$subnumberingfield) {
+            $subnumberingfield = new stdClass();
+            $subnumberingfield->shortname = 'coursesubnumbering';
+            $subnumberingfield->name = 'Course Subnumbering';
+            $subnumberingfield->type = 'text';
+            $subnumberingfield->description = '<p>Subnumber for subcourses (e.g., 1 for first subcourse, 2 for second). Leave empty for main courses. Combined with Course Numbering, displays as "01-1", "01-2", etc.</p>';
+            $subnumberingfield->descriptionformat = FORMAT_HTML;
+            $subnumberingfield->sortorder = 2;
+            $subnumberingfield->categoryid = $category->id;
+            $subnumberingfield->configdata = json_encode([
+                'required' => 0,
+                'uniquevalues' => 0,
+                'defaultvalue' => '',
+                'locked' => 0,
+                'visibility' => 2,
+                'displaysize' => 10,
+                'maxlength' => 10,
+                'ispassword' => 0,
+                'link' => ''
+            ]);
+            $subnumberingfield->timecreated = time();
+            $subnumberingfield->timemodified = time();
+
+            $DB->insert_record('customfield_field', $subnumberingfield);
+        }
+
+        upgrade_plugin_savepoint(true, 2025100602, 'theme', 'alife');
+    }
+
     return true;
 }

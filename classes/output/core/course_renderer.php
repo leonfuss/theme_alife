@@ -30,6 +30,9 @@ class course_renderer extends \core_course_renderer {
     /** @var array Course numbering from custom fields */
     protected $course_numbering = array();
 
+    /** @var array Course subnumbering from custom fields */
+    protected $course_subnumbering = array();
+
     /**
      * Renders HTML to display a course content on frontpage
      *
@@ -61,25 +64,48 @@ class course_renderer extends \core_course_renderer {
         // Course URL for click handler
         $courseurl = new moodle_url('/course/view.php', array('id' => $course->id));
 
-        // Get course numbering from custom field
+        // Get course numbering and subnumbering from custom field
         $coursenumber = '';
+        $mainnum = null;
+        $subnum = null;
+
         if (isset($this->course_numbering[$course->id])) {
-            $coursenumber = str_pad($this->course_numbering[$course->id], 2, '0', STR_PAD_LEFT);
-        } else {
-            // If not in array, get it directly from custom field (for All Courses page)
+            $mainnum = $this->course_numbering[$course->id];
+        }
+
+        if (isset($this->course_subnumbering[$course->id])) {
+            $subnum = $this->course_subnumbering[$course->id];
+        }
+
+        // If not in arrays, get directly from custom fields (for All Courses page)
+        if ($mainnum === null || $subnum === null) {
             $handler = \core_customfield\handler::get_handler('core_course', 'course');
             $datas = $handler->get_instance_data($course->id);
 
             foreach ($datas as $data) {
                 $fieldname = $data->get_field()->get('shortname');
 
-                if ($fieldname === 'coursenumbering' || $fieldname === 'frontpagepriority') {
+                if (($fieldname === 'coursenumbering' || $fieldname === 'frontpagepriority') && $mainnum === null) {
                     $value = $data->get_value();
                     if ($value !== null && $value !== '' && $value !== false) {
-                        $coursenumber = str_pad((int)$value, 2, '0', STR_PAD_LEFT);
-                        break;
+                        $mainnum = (int)$value;
                     }
                 }
+
+                if ($fieldname === 'coursesubnumbering' && $subnum === null) {
+                    $value = $data->get_value();
+                    if ($value !== null && $value !== '' && $value !== false) {
+                        $subnum = (int)$value;
+                    }
+                }
+            }
+        }
+
+        // Format the course number with optional subnumber
+        if ($mainnum !== null) {
+            $coursenumber = str_pad($mainnum, 2, '0', STR_PAD_LEFT);
+            if ($subnum !== null && $subnum > 0) {
+                $coursenumber .= '-' . $subnum;
             }
         }
 
@@ -202,13 +228,26 @@ class course_renderer extends \core_course_renderer {
         // Filter and sort courses based on custom fields
         $filteredcourses = array();
         $numbering = array(); // Store course numbering separately
+        $subnumbering = array(); // Store course subnumbering separately
 
         foreach ($courses as $course) {
+            // Skip hidden courses unless user has capability to view them
+            // Check at system context first (for site admins), then course context
+            // Note: has_capability() automatically respects role switching, so admins viewing
+            // as another role will see the course list as that role would see it
+            $canviewhidden = has_capability('moodle/course:viewhiddencourses', context_system::instance()) ||
+                             has_capability('moodle/course:viewhiddencourses', context_course::instance($course->id));
+
+            if (!$course->visible && !$canviewhidden) {
+                continue;
+            }
+
             $handler = \core_customfield\handler::get_handler('core_course', 'course');
-            $datas = $handler->get_instance_data($course->id);
+            $datas = $handler->get_instance_data($course->id, true); // true = return data for all users
 
             $showonfrontpage = false;
-            $coursenumber = 999; // Default numbering (lower number = displayed first)
+            $coursenumber = null; // No default - only set if custom field has value
+            $coursesubnumber = 0; // Default subnumbering
 
             foreach ($datas as $data) {
                 $fieldname = $data->get_field()->get('shortname');
@@ -225,12 +264,21 @@ class course_renderer extends \core_course_renderer {
                         $coursenumber = (int)$value;
                     }
                 }
+
+                // Get course subnumbering
+                if ($fieldname === 'coursesubnumbering') {
+                    $value = $data->get_value();
+                    if ($value !== null && $value !== '' && $value !== false) {
+                        $coursesubnumber = (int)$value;
+                    }
+                }
             }
 
             // Only include courses marked to show on frontpage
             if ($showonfrontpage) {
                 $filteredcourses[] = $course;
                 $numbering[$course->id] = $coursenumber;
+                $subnumbering[$course->id] = $coursesubnumber;
             }
         }
 
@@ -238,16 +286,26 @@ class course_renderer extends \core_course_renderer {
         if (empty($filteredcourses)) {
             $filteredcourses = $courses;
         } else {
-            // Sort by numbering (lower number first)
-            usort($filteredcourses, function($a, $b) use ($numbering) {
-                $numbera = isset($numbering[$a->id]) ? $numbering[$a->id] : 999;
-                $numberb = isset($numbering[$b->id]) ? $numbering[$b->id] : 999;
+            // Sort by numbering and subnumbering (lower number first)
+            usort($filteredcourses, function($a, $b) use ($numbering, $subnumbering) {
+                // Treat null as 999 for sorting only
+                $numbera = isset($numbering[$a->id]) && $numbering[$a->id] !== null ? $numbering[$a->id] : 999;
+                $numberb = isset($numbering[$b->id]) && $numbering[$b->id] !== null ? $numbering[$b->id] : 999;
+
+                // If main numbers are equal, sort by subnumber
+                if ($numbera === $numberb) {
+                    $subnuma = isset($subnumbering[$a->id]) ? $subnumbering[$a->id] : 0;
+                    $subnumb = isset($subnumbering[$b->id]) ? $subnumbering[$b->id] : 0;
+                    return $subnuma - $subnumb;
+                }
+
                 return $numbera - $numberb;
             });
         }
 
-        // Store numbering for use in coursecat_coursebox
+        // Store numbering and subnumbering for use in coursecat_coursebox
         $this->course_numbering = $numbering;
+        $this->course_subnumbering = $subnumbering;
 
         $totalcount = count($filteredcourses);
 
@@ -279,13 +337,30 @@ class course_renderer extends \core_course_renderer {
             return '';
         }
 
-        // Get numbering for all courses and sort them
+        // Get numbering and subnumbering for all courses and sort them, filter hidden courses
         $numbering = array();
-        foreach ($courses as $course) {
-            $handler = \core_customfield\handler::get_handler('core_course', 'course');
-            $datas = $handler->get_instance_data($course->id);
+        $subnumbering = array();
+        $visiblecourses = array();
 
-            $coursenumber = 999; // Default
+        foreach ($courses as $course) {
+            // Skip hidden courses unless user has capability to view them
+            // Check at system context first (for site admins), then course context
+            // Note: has_capability() automatically respects role switching, so admins viewing
+            // as another role will see the course list as that role would see it
+            $canviewhidden = has_capability('moodle/course:viewhiddencourses', context_system::instance()) ||
+                             has_capability('moodle/course:viewhiddencourses', context_course::instance($course->id));
+
+            if (!$course->visible && !$canviewhidden) {
+                continue;
+            }
+
+            $visiblecourses[] = $course;
+
+            $handler = \core_customfield\handler::get_handler('core_course', 'course');
+            $datas = $handler->get_instance_data($course->id, true); // true = return data for all users
+
+            $coursenumber = null; // No default - only set if custom field has value
+            $coursesubnumber = 0; // Default
 
             foreach ($datas as $data) {
                 $fieldname = $data->get_field()->get('shortname');
@@ -294,24 +369,44 @@ class course_renderer extends \core_course_renderer {
                     $value = $data->get_value();
                     if ($value !== null && $value !== '' && $value !== false) {
                         $coursenumber = (int)$value;
-                        break;
+                    }
+                }
+
+                if ($fieldname === 'coursesubnumbering') {
+                    $value = $data->get_value();
+                    if ($value !== null && $value !== '' && $value !== false) {
+                        $coursesubnumber = (int)$value;
                     }
                 }
             }
 
             $numbering[$course->id] = $coursenumber;
+            $subnumbering[$course->id] = $coursesubnumber;
         }
 
-        // Sort courses by numbering
+        // Use only visible courses
+        $courses = $visiblecourses;
+
+        // Sort courses by numbering and subnumbering
         $coursesarray = array_values($courses);
-        usort($coursesarray, function($a, $b) use ($numbering) {
-            $numbera = isset($numbering[$a->id]) ? $numbering[$a->id] : 999;
-            $numberb = isset($numbering[$b->id]) ? $numbering[$b->id] : 999;
+        usort($coursesarray, function($a, $b) use ($numbering, $subnumbering) {
+            // Treat null as 999 for sorting only
+            $numbera = isset($numbering[$a->id]) && $numbering[$a->id] !== null ? $numbering[$a->id] : 999;
+            $numberb = isset($numbering[$b->id]) && $numbering[$b->id] !== null ? $numbering[$b->id] : 999;
+
+            // If main numbers are equal, sort by subnumber
+            if ($numbera === $numberb) {
+                $subnuma = isset($subnumbering[$a->id]) ? $subnumbering[$a->id] : 0;
+                $subnumb = isset($subnumbering[$b->id]) ? $subnumbering[$b->id] : 0;
+                return $subnuma - $subnumb;
+            }
+
             return $numbera - $numberb;
         });
 
-        // Store numbering for use in coursecat_coursebox
+        // Store numbering and subnumbering for use in coursecat_coursebox
         $this->course_numbering = $numbering;
+        $this->course_subnumbering = $subnumbering;
 
         // Call parent method with sorted courses
         return parent::coursecat_courses($chelper, $coursesarray, $totalcount);

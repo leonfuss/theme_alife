@@ -30,4 +30,9 @@ $THEME->layouts = [
         "defaultregion" => "side-pre",
         "options" => ["nonavbar" => true],
     ],
+    "login" => [
+        "file" => "login.php",
+        "regions" => [],
+        "options" => ["langmenu" => true, "nonavbar" => true, "nofooter" => true],
+    ],
 ];

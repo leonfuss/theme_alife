@@ -1,0 +1,48 @@
+{{!
+    ALIFE Theme - Custom Login Page Template
+}}
+{{> theme_boost/head }}
+<body {{{ bodyattributes }}} class="alife-login-page">
+{{> core/local/toast/wrapper}}
+
+{{{ output.standard_top_of_body_html }}}
+
+<div class="alife-login-wrapper">
+    <div class="alife-login-container">
+        <!-- Left side: Login form -->
+        <div class="alife-login-left">
+            <div class="alife-login-content">
+                <div class="alife-login-forms">
+                    {{{ output.main_content }}}
+                </div>
+            </div>
+        </div>
+
+        <!-- Vertical separator -->
+        <div class="alife-login-separator"></div>
+
+        <!-- Right side: Logo -->
+        <div class="alife-login-right">
+            <div class="alife-login-logo">
+                <div class="alife-logo-icon-wrapper">
+                    {{# output.get_compact_logo_url }}
+                        <img src="{{output.get_compact_logo_url}}" alt="{{sitename}}" class="alife-logo-icon">
+                    {{/ output.get_compact_logo_url }}
+                </div>
+                <div class="alife-logo-text">
+                    <span class="alife-letter-a">A</span><span class="alife-letter-l">L</span><span class="alife-letter-i">I</span><span class="alife-letter-f">F</span><span class="alife-letter-e">E</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{{ output.standard_end_of_body_html }}}
+</body>
+</html>
+{{#js}}
+M.util.js_pending('theme_boost/loader');
+require(['theme_boost/loader'], function() {
+  M.util.js_complete('theme_boost/loader');
+});
+{{/js}}
